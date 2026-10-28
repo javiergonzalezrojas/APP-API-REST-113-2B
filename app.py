@@ -13,7 +13,7 @@ def mostrar_respuesta(respuesta):
 
     if respuesta.text:
         print("respuesta JSON:")
-        print(respuesta.JSON())
+        print(respuesta.json())
     else:
         print("la respuesta no tiene datos")
 
@@ -45,7 +45,7 @@ try:
 
     nuevo_producto = {
         "title": "teclado mecanico gamer",
-        "price": "90000",
+        "price": 90000,
         "description": "teclado para juegos",
         "category": "electronics"
     }
@@ -67,7 +67,7 @@ try:
 
     producto_actualizado = {
         "title": "notebook para desarrollar",
-        "price": "590000",
+        "price": 590000,
         "description": "noteboo para programar",
         "category": "laptops",
     }
@@ -75,6 +75,30 @@ try:
     respuesta.raise_for_status()
     mostrar_respuesta(respuesta)
 
+    #==========================================
+    #4.   METODO PATCH
+    #==========================================
+
+    print("\n ---PATCH: modifica solo *precio---")
+
+    respuesta = requests.patch(
+    f"{BASE_URL}/1",
+    json={"price": 590000},
+    timeout=10
+
+    )
 
 except requests.exceptions.Timeout:
-    print("Error: se agoto el tiempo de espera")    
+    print("Error: se agoto el tiempo de espera")
+
+except requests.exceptions.HTTPError as error:
+    print("error Http", error)
+
+except requests.exceptions.ConnectionError:
+    print("Error: no fue posible conectar con la API.")
+
+except requests.exceptions.requestexception as error:
+    print("error en la solicitud:", error)
+
+except (ValueError, KeyError) as error:
+    print("error al procesar los datos:", error)
